@@ -1,9 +1,9 @@
 FROM alpine:3.15 AS builder
 
-ENV KUBE_RUNNING_VERSION v1.23.5
-ENV HELM_VERSION v3.6.3
-ENV HELMFILE_VERSION 0.155.1
-ENV TERRAFORM_VERSION 1.1.7
+ENV VERSION_KUBE_RUNNING v1.23.5
+ENV VERSION_HELM v3.6.3
+ENV VERSION_HELMFILE 0.155.1
+ENV VERSION_TERRAFORM 1.1.7
 
 RUN apk --update --no-cache add \
   curl \
@@ -12,15 +12,15 @@ RUN apk --update --no-cache add \
   wget
 
 RUN cd /usr/local/bin && \
-    curl https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip -o terraform_${TERRAFORM_VERSION}_linux_amd64.zip && \
-    unzip terraform_${TERRAFORM_VERSION}_linux_amd64.zip && \
-    rm terraform_${TERRAFORM_VERSION}_linux_amd64.zip
+    curl https://releases.hashicorp.com/terraform/${VERSION_TERRAFORM}/terraform_${VERSION_TERRAFORM}_linux_amd64.zip -o terraform_${VERSION_TERRAFORM}_linux_amd64.zip && \
+    unzip terraform_${VERSION_TERRAFORM}_linux_amd64.zip && \
+    rm terraform_${VERSION_TERRAFORM}_linux_amd64.zip
 
-RUN curl -L https://storage.googleapis.com/kubernetes-release/release/${KUBE_RUNNING_VERSION}/bin/linux/amd64/kubectl -o /usr/local/bin/kubectl && \
+RUN curl -L https://storage.googleapis.com/kubernetes-release/release/${VERSION_KUBE_RUNNING}/bin/linux/amd64/kubectl -o /usr/local/bin/kubectl && \
     chmod +x /usr/local/bin/kubectl
 
-RUN wget https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz -O helm-${HELM_VERSION}-linux-amd64.tar.gz && \
-    tar -xvf helm-${HELM_VERSION}-linux-amd64.tar.gz && \
+RUN wget https://get.helm.sh/helm-${VERSION_HELM}-linux-amd64.tar.gz -O helm-${VERSION_HELM}-linux-amd64.tar.gz && \
+    tar -xvf helm-${VERSION_HELM}-linux-amd64.tar.gz && \
     mv linux-amd64/helm /usr/local/bin/helm && \
     rm -rf linux-amd64 && \
     chmod +x /usr/local/bin/helm
@@ -40,7 +40,7 @@ RUN helm plugin install https://github.com/databus23/helm-diff && \
     helm plugin install https://github.com/aslafy-z/helm-git.git && \
     helm plugin install https://github.com/rimusz/helm-tiller
 
-RUN wget https://github.com/helmfile/helmfile/releases/download/v${HELMFILE_VERSION}/helmfile_${HELMFILE_VERSION}_linux_amd64.tar.gz -O helmfile.tar.gz && \
+RUN wget https://github.com/helmfile/helmfile/releases/download/v${VERSION_HELMFILE}/helmfile_${VERSION_HELMFILE}_linux_amd64.tar.gz -O helmfile.tar.gz && \
      tar -xvf helmfile.tar.gz && chmod +x helmfile && mv helmfile /usr/local/bin/helmfile
 
 RUN curl -o aws-iam-authenticator https://amazon-eks.s3.us-west-2.amazonaws.com/1.19.6/2021-01-05/bin/linux/amd64/aws-iam-authenticator && \
@@ -53,7 +53,7 @@ RUN wget https://releases.hashicorp.com/vault/1.7.2/vault_1.7.2_linux_amd64.zip 
 
 FROM alpine:3.15
 
-ENV AWSCLI 1.17.9
+ENV AWS_CLI 1.17.9
 
 RUN apk --update --no-cache add \
     bash \
@@ -61,7 +61,7 @@ RUN apk --update --no-cache add \
     py3-pip
 
 RUN pip3 install --upgrade pip
-RUN pip3 install requests awscli==${AWSCLI}
+RUN pip3 install requests awscli==${AWS_CLI}
 
 COPY --from=builder /usr/local/bin /usr/local/bin
 COPY --from=builder /usr/bin/vault /usr/local/bin/
