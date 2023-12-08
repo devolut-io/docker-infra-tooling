@@ -1,9 +1,9 @@
 FROM alpine:3.15 AS builder
 
-ENV VERSION_KUBE_RUNNING v1.23.5
-ENV VERSION_HELM v3.6.3
-ENV VERSION_HELMFILE 0.155.1
-ENV VERSION_TERRAFORM 1.1.7
+ENV VERSION_KUBERNETES  v1.23.5
+ENV VERSION_HELM        v3.6.3
+ENV VERSION_HELMFILE    0.155.1
+ENV VERSION_TERRAFORM   1.1.7
 
 RUN apk --update --no-cache add \
   curl \
@@ -16,7 +16,7 @@ RUN cd /usr/local/bin && \
     unzip terraform_${VERSION_TERRAFORM}_linux_amd64.zip && \
     rm terraform_${VERSION_TERRAFORM}_linux_amd64.zip
 
-RUN curl -L https://storage.googleapis.com/kubernetes-release/release/${VERSION_KUBE_RUNNING}/bin/linux/amd64/kubectl -o /usr/local/bin/kubectl && \
+RUN curl -L https://storage.googleapis.com/kubernetes-release/release/${VERSION_KUBERNETES}/bin/linux/amd64/kubectl -o /usr/local/bin/kubectl && \
     chmod +x /usr/local/bin/kubectl
 
 RUN wget https://get.helm.sh/helm-${VERSION_HELM}-linux-amd64.tar.gz -O helm-${VERSION_HELM}-linux-amd64.tar.gz && \
@@ -53,7 +53,7 @@ RUN wget https://releases.hashicorp.com/vault/1.7.2/vault_1.7.2_linux_amd64.zip 
 
 FROM alpine:3.15
 
-ENV AWS_CLI 1.17.9
+ENV VERSION_AWS_CLI 1.17.9
 
 RUN apk --update --no-cache add \
     bash \
@@ -61,7 +61,7 @@ RUN apk --update --no-cache add \
     py3-pip
 
 RUN pip3 install --upgrade pip
-RUN pip3 install requests awscli==${AWS_CLI}
+RUN pip3 install requests awscli==${VERSION_AWS_CLI}
 
 COPY --from=builder /usr/local/bin /usr/local/bin
 COPY --from=builder /usr/bin/vault /usr/local/bin/
