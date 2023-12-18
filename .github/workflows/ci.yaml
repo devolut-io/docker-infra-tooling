@@ -2,8 +2,8 @@ name: ci
 
 on:
   push:
-    branches:
-      - 'master'
+    # tags:
+    #   - 'v*'
 
 jobs:
   build:
@@ -25,12 +25,18 @@ jobs:
         id: vars
         run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
 
-      - name: Build and push
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          file: ./Dockerfile
-          push: true
-          tags: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/infra-tooling:${{ steps.vars.outputs.sha_short }}
-            ${{ secrets.DOCKERHUB_USERNAME }}/infra-tooling:latest
+      - name: Get Tag
+        run: echo "TAG=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+
+      - name: Test
+        run: echo ${{ env.TAG }}
+
+      # - name: Build and push
+      #   uses: docker/build-push-action@v5
+      #   with:
+      #     context: .
+      #     file: ./Dockerfile
+      #     push: true
+      #     tags: |
+      #       ${{ secrets.DOCKERHUB_USERNAME }}/infra-tooling:${{ steps.vars.outputs.sha_short }}
+      #       ${{ secrets.DOCKERHUB_USERNAME }}/infra-tooling:latest
