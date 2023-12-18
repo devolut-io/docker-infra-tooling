@@ -38,5 +38,5 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/infra-tooling:${{ env.TAG }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/infra-tooling:v1.2.3
             ${{ secrets.DOCKERHUB_USERNAME }}/infra-tooling:latest
