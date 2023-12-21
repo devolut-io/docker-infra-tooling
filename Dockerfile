@@ -59,8 +59,7 @@ RUN apk --update --no-cache add \
     bash \
     git \
     python3 \
-    py3-pip \
-    git
+    py3-pip
 
 RUN pip3 install --upgrade pip
 RUN pip3 install requests awscli==${VERSION_AWS_CLI}
