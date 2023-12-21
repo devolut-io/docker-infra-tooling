@@ -57,6 +57,7 @@ ENV VERSION_AWS_CLI 1.17.9
 
 RUN apk --update --no-cache add \
     bash \
+    git \
     python3 \
     py3-pip
 
