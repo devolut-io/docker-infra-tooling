@@ -58,14 +58,14 @@ ENV VERSION_AWS_CLI 1.17.9
 RUN apk --update --no-cache add \
     bash \
     python3 \
-    py3-pip
+    py3-pip \
+    git
 
 RUN pip3 install --upgrade pip
 RUN pip3 install requests awscli==${VERSION_AWS_CLI}
 
 COPY --from=builder /usr/local/bin /usr/local/bin
 
-COPY --from=builder /usr/bin/git /usr/local/bin/
 COPY --from=builder /usr/bin/vault /usr/local/bin/
 
 RUN rm -rf /var/cache/apk/*
