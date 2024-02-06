@@ -48,8 +48,8 @@ RUN curl -o aws-iam-authenticator https://amazon-eks.s3.us-west-2.amazonaws.com/
     chmod +x ./aws-iam-authenticator && \
     mv ./aws-iam-authenticator /usr/local/bin/aws-iam-authenticator
 
-RUN wget https://releases.hashicorp.com/vault/$VERSION_VAULT_CLI/vault_$VERSION_VAULT_CLI_linux_amd64.zip && \
-    unzip vault_$VERSION_VAULT_CLI_linux_amd64.zip && \
+RUN wget https://releases.hashicorp.com/vault/${VERSION_VAULT_CLI}/vault_${VERSION_VAULT_CLI}_linux_amd64.zip && \
+    unzip vault_${VERSION_VAULT_CLI}_linux_amd64.zip && \
     mv vault /usr/bin
 
 FROM alpine:3.15
