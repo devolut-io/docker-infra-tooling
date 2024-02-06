@@ -4,6 +4,7 @@ ENV VERSION_KUBERNETES  v1.23.5
 ENV VERSION_HELM        v3.6.3
 ENV VERSION_HELMFILE    0.155.1
 ENV VERSION_TERRAFORM   1.1.7
+ENV VERSION_VAULT_CLI   1.15.5
 
 RUN apk --update --no-cache add \
   curl \
@@ -47,8 +48,8 @@ RUN curl -o aws-iam-authenticator https://amazon-eks.s3.us-west-2.amazonaws.com/
     chmod +x ./aws-iam-authenticator && \
     mv ./aws-iam-authenticator /usr/local/bin/aws-iam-authenticator
 
-RUN wget https://releases.hashicorp.com/vault/1.7.2/vault_1.7.2_linux_amd64.zip && \
-    unzip vault_1.7.2_linux_amd64.zip && \
+RUN wget https://releases.hashicorp.com/vault/$VERSION_VAULT_CLI/vault_$VERSION_VAULT_CLI_linux_amd64.zip && \
+    unzip vault_$VERSION_VAULT_CLI_linux_amd64.zip && \
     mv vault /usr/bin
 
 FROM alpine:3.15
