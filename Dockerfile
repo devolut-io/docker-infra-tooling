@@ -54,11 +54,13 @@ RUN wget https://releases.hashicorp.com/vault/${VERSION_VAULT_CLI}/vault_${VERSI
 
 FROM alpine:3.18
 
+ENV VERSION_AWS_CLI 2.15.14-r0
+
 RUN apk --update --no-cache add \
     bash \
     git \
     python3 \
-    aws-cli
+    aws-cli=${VERSION_AWS_CLI}
 
 COPY --from=builder /usr/local/bin /usr/local/bin
 
