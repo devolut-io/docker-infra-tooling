@@ -1,10 +1,10 @@
-FROM alpine:3.15 AS builder
+FROM alpine:3.18 AS builder
 
-ENV VERSION_KUBERNETES  v1.23.5
-ENV VERSION_HELM        v3.6.3
-ENV VERSION_HELMFILE    0.155.1
-ENV VERSION_TERRAFORM   1.1.7
-ENV VERSION_VAULT_CLI   1.15.5
+ENV VERSION_KUBERNETES  v1.28.8
+ENV VERSION_HELM        v3.15.0
+ENV VERSION_HELMFILE    0.164.0
+ENV VERSION_TERRAFORM   1.8.3
+ENV VERSION_VAULT_CLI   1.16.2
 
 RUN apk --update --no-cache add \
   curl \
@@ -52,18 +52,15 @@ RUN wget https://releases.hashicorp.com/vault/${VERSION_VAULT_CLI}/vault_${VERSI
     unzip vault_${VERSION_VAULT_CLI}_linux_amd64.zip && \
     mv vault /usr/bin
 
-FROM alpine:3.15
+FROM alpine:3.18
 
-ENV VERSION_AWS_CLI 1.17.9
+ENV VERSION_AWS_CLI 2.15.14-r0
 
 RUN apk --update --no-cache add \
     bash \
     git \
     python3 \
-    py3-pip
-
-RUN pip3 install --upgrade pip
-RUN pip3 install requests awscli==${VERSION_AWS_CLI}
+    aws-cli=${VERSION_AWS_CLI}
 
 COPY --from=builder /usr/local/bin /usr/local/bin
 
