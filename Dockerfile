@@ -1,7 +1,7 @@
 FROM alpine:3.18 AS builder
 
 ENV VERSION_KUBERNETES  v1.28.8
-ENV VERSION_HELM        v3.15.0
+ENV VERSION_HELM        v3.14.0
 ENV VERSION_HELMFILE    0.164.0
 ENV VERSION_TERRAFORM   1.8.3
 ENV VERSION_VAULT_CLI   1.16.2
@@ -65,10 +65,9 @@ RUN apk --update --no-cache add \
 
 COPY --from=builder /usr/local/bin /usr/local/bin
 
-COPY --from=builder /usr/bin/vault /usr/local/bin/
-
-COPY --from=builder /root/.cache/helm/plugins /root/.cache/helm/plugins
+COPY --from=builder /usr/bin/vault /usr/local/bin
 
 COPY --from=builder /root/.local/share/helm/plugins /root/.local/share/helm/plugins
 
 RUN rm -rf /var/cache/apk/*
+
