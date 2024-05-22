@@ -62,8 +62,13 @@ RUN apk --update --no-cache add \
     python3 \
     aws-cli=${VERSION_AWS_CLI}
 
+
 COPY --from=builder /usr/local/bin /usr/local/bin
 
 COPY --from=builder /usr/bin/vault /usr/local/bin/
+
+COPY --from=builder /root/.cache/helm/plugins /root/.cache/helm/plugins
+
+COPY --from=builder /root/.local/share/helm/plugins /root/.local/share/helm/plugins
 
 RUN rm -rf /var/cache/apk/*
