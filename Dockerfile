@@ -1,10 +1,10 @@
-FROM alpine:3.18 AS builder
+FROM alpine:3.20 AS builder
 
-ENV VERSION_KUBERNETES  v1.28.8
-ENV VERSION_HELM        v3.14.0
-ENV VERSION_HELMFILE    0.164.0
-ENV VERSION_TERRAFORM   1.8.3
-ENV VERSION_VAULT_CLI   1.16.2
+ENV VERSION_KUBERNETES=v1.30.2
+ENV VERSION_HELM=v3.15.3
+ENV VERSION_HELMFILE=0.167.1
+ENV VERSION_TERRAFORM=1.9.3
+ENV VERSION_VAULT_CLI=1.17.2
 
 RUN apk --update --no-cache add \
   curl \
@@ -44,7 +44,7 @@ RUN helm plugin install https://github.com/databus23/helm-diff && \
 RUN wget https://github.com/helmfile/helmfile/releases/download/v${VERSION_HELMFILE}/helmfile_${VERSION_HELMFILE}_linux_amd64.tar.gz -O helmfile.tar.gz && \
      tar -xvf helmfile.tar.gz && chmod +x helmfile && mv helmfile /usr/local/bin/helmfile
 
-RUN curl -o aws-iam-authenticator https://amazon-eks.s3.us-west-2.amazonaws.com/1.19.6/2021-01-05/bin/linux/amd64/aws-iam-authenticator && \
+RUN curl -o aws-iam-authenticator https://github.com/kubernetes-sigs/aws-iam-authenticator/releases/download/v0.6.22/aws-iam-authenticator_0.6.22_linux_amd64 && \
     chmod +x ./aws-iam-authenticator && \
     mv ./aws-iam-authenticator /usr/local/bin/aws-iam-authenticator
 
@@ -52,9 +52,9 @@ RUN wget https://releases.hashicorp.com/vault/${VERSION_VAULT_CLI}/vault_${VERSI
     unzip vault_${VERSION_VAULT_CLI}_linux_amd64.zip && \
     mv vault /usr/bin
 
-FROM alpine:3.18
+FROM alpine:3.20
 
-ENV VERSION_AWS_CLI 2.15.14-r0
+ENV VERSION_AWS_CLI=2.15.57-r0
 
 RUN apk --update --no-cache add \
     bash \
