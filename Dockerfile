@@ -60,6 +60,7 @@ RUN apk --update --no-cache add \
     bash \
     git \
     python3 \
+    docker \
     aws-cli=${VERSION_AWS_CLI}
 
 COPY --from=builder /usr/local/bin /usr/local/bin
